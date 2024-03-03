@@ -32,7 +32,7 @@ class Car(BaseModel):
     body: str
     doors: int
     paint_color: str
-    VIN: str
+    vin: str
     user_id: str
     equipment: list
 

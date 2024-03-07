@@ -19,9 +19,9 @@ class CarController:
         if destination not in self.available_destinations_collection:
             print(f"{destination} is not on the company's Cities list")
             return 0
-        if car in self.cars_collection and destination in self.available_destinations_collection:
+        if car in cars_collection and destination in self.available_destinations_collection:
             print(f"sending {car.brand} to {destination}")
 
     def list_cars(self):
         cars = self.cars_collection.find({})
-        return [name['name'] for name in cars]
+        return [name['brand'] for name in cars]

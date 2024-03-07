@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-import CarApi, Controller  # Assuming your modules are named CarApp
+import CarApi, Controller 
 
 client = MongoClient("mongodb+srv://tymoteuszbroda:Dupa123@carapi.g8eabyl.mongodb.net/?retryWrites=true&w=majority&appName=CarApi")  # Update the connection string as needed
 db = client['CarApi'] 

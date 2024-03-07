@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_file
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from Car import *
 class API:
     def __init__(self):
             # Create a Flask app

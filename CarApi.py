@@ -31,7 +31,7 @@ class API:
                 for car in cars:
                     car['_id'] = str(car['_id'])
                 return jsonify(cars)
-            @app.route('/addcar', methods=['POST']) #do zrobienia (bylo jako przykladowe)
+            @app.route('/addcar', methods=['POST'])
             def add_car():
                 data = request.get_json()
                 car = Car.model.add_car(data)

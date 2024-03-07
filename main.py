@@ -5,7 +5,7 @@ client = MongoClient("mongodb+srv://tymoteuszbroda:Dupa123@carapi.g8eabyl.mongod
 db = client['CarApi'] 
 api_instance = CarApi.API()
 
-controller = Controller.Controller(db)
+controller = Controller.Controller(db, 'Available_destinations')
 controller.add_new_destination("test")
 controller.add_new_destination("test2")
 controller.load_available_destinations()

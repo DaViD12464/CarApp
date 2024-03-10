@@ -1,6 +1,18 @@
 from pydantic import BaseModel
 # basemodel for Car
 class Car(BaseModel):
+    brand: str
+    model: str
+    year: int
+    engine_vol: float
+    engine_code: str
+    power: int
+    body: str
+    doors: int
+    paint_color: str
+    vin: str
+    user_id: str
+    equipment: list
     def __init__(self, brand, model, year, engine_vol, engine_code, power, body, doors, paint_color, vin, user_id, equipment):
         self.brand = brand
         self.model = model
@@ -14,15 +26,3 @@ class Car(BaseModel):
         self.vin = vin
         self.user_id = user_id
         self.equipment = equipment
-    brand: str
-    model: str
-    year: int
-    engine_vol: float
-    engine_code: str
-    power: int
-    body: str
-    doors: int
-    paint_color: str
-    vin: str
-    user_id: str
-    equipment: list

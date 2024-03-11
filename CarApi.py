@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request, send_file
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from Car import *
+from baseclass.Car import *
 import os
 from dotenv import find_dotenv,load_dotenv
+
+from baseclass.Car import Car
 
 '''setting up the dotenv environment'''
 #auto find the dotenv file

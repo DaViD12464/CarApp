@@ -1,7 +1,9 @@
 from pymongo import MongoClient
 import CarApi, DestinationsController, CarController, Car
 
-client = MongoClient("mongodb+srv://tymoteuszbroda:Dupa123@carapi.g8eabyl.mongodb.net/?retryWrites=true&w=majority&appName=CarApi")  # Update the connection string as needed
+from CarApi import uri
+
+client = MongoClient(uri)  # Update the connection string as needed
 db = client['CarApi'] 
 api_instance = CarApi.API()
 

@@ -42,5 +42,3 @@ def add_car():
     data = request.get_json()
     car = Car.model.add_car(data)
     return jsonify(car), 201
-if __name__ == '__main__':
-    app.run(host='127.0.0.1',port='8000')

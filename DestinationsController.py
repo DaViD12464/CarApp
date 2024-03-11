@@ -18,7 +18,7 @@ class DestinationsController:
             self.available_destinations_collection.insert_one({'name': destination})
 
     def add_new_destination(self, destination: str):
-        #cannot iterate over Collection, next 2 lines are for making this possible.
+        #cannot iterate over Collection, list_available_destinations() method is for making this possible.
         destination_names = self.list_available_destinations()
         
         if destination not in destination_names:

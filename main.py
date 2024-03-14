@@ -1,14 +1,12 @@
 import DestinationsController, CarController
 from CarApi import *
-<<<<<<< HEAD
 import requests
-=======
+from baseclass.Car import *
 
 from baseclass import *
 
 app.run(host='127.0.0.1',port='8000')
 
->>>>>>> c7f0f6a424d492266e527ecbd48b68719e14bf69
 
 #temp
 print("Destination tests")

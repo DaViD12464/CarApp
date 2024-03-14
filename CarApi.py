@@ -2,24 +2,6 @@ from flask import Flask, jsonify, request
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from Car import *
-<<<<<<< HEAD
-app = Flask(__name__)
-app.debug = True
-
-# setup database
-uri = "mongodb+srv://tymoteuszbroda:Dupa123@carapi.g8eabyl.mongodb.net/?retryWrites=true&w=majority&appName=CarApi"
-client = MongoClient(uri, server_api=ServerApi('1'))
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
-    
-# Create a database and a collection
-db = client['CarApi']
-collection_Cars = db['Cars']
-
-=======
 import os
 from dotenv import find_dotenv,load_dotenv
 
@@ -46,7 +28,6 @@ except Exception as e:
 db = client['CarApi']
 collection_Cars = db['Cars']
 
->>>>>>> f09a1730debc6eaf4b8ca389581e2b3586f70896
 @app.route('/')
 def index():
     return 'Welcome to CarApi!'
@@ -61,8 +42,3 @@ def add_car():
     data = request.get_json()
     car = Car.model.add_car(data)
     return jsonify(car), 201
-<<<<<<< HEAD
-if __name__ == '__main__':
-    app.run()
-=======
->>>>>>> f09a1730debc6eaf4b8ca389581e2b3586f70896

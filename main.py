@@ -20,7 +20,7 @@ url = 'http://127.0.0.1:8000/addcar'
 car_data = {
   "brand": "Toyota",
   "model": "Camry",
-  "year": 2020,
+  "year": 2020, 
   "engine_vol": 2.5,
   "engine_code": "A25A-FKS",
   "power": 203,

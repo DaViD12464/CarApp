@@ -1,4 +1,4 @@
-import DestinationsController, CarController
+import controllers.DestinationsController as DestinationsController, controllers.CarController as CarController
 from CarApi import *
 import requests
 from baseclass.Car import *

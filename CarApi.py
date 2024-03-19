@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from baseclass.Car import *
 import os
 from dotenv import find_dotenv,load_dotenv
 from bson import ObjectId
@@ -19,14 +18,18 @@ app = Flask(__name__)
 app.debug = True
 # setup database
 
+
 client = MongoClient(uri, server_api=ServerApi('1'))
 try:
     client.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
+    
+    
 # Create a database and a collection
 db = client['CarApi']
 collection_Cars = db['Cars']
+collection_Users = db['Users']
 
     

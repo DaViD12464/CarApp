@@ -5,8 +5,3 @@ class Destination(BaseModel):
     city: str
     zip_code: str
     country: str
-    def __init__(self, street, city, zip_code, country):
-        self.street = street
-        self.city = city
-        self.zip_code = zip_code
-        self.country = country

@@ -6,6 +6,5 @@ class User(BaseModel):
     username: str
     password: str
     email: str
-    phone: str
+    phone: int
     user_privilleges: str
-    

@@ -1,8 +1,7 @@
-import controllers.DestinationsController as DestinationsController, controllers.CarController, controllers.UsersController as Controller
+import controllers.DestinationsController as DestinationsController, controllers.CarController as CarController, controllers.UsersController as Controller # --not used
 from CarApi import *
-import requests
-from baseclass.Car import *
 
-app.run(host='127.0.0.1',port='8000')
-
-
+try:
+    app.run(host='127.0.0.1', port=8000)
+except Exception as e:
+    print(f"An error occurred while running Flask app: {e}")

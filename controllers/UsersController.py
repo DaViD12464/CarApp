@@ -1,9 +1,9 @@
 from CarApi import collection_Users, app, db, sec_key
 from baseclass.User import *
-import uuid, datetime, jwt
+import datetime, jwt
 from passlib.hash import pbkdf2_sha256
 from flask import jsonify, request, make_response
-from bson import ObjectId
+from bson import ObjectId, uuid
 
 @app.route('/all_users', methods=['GET'])
 def get_all_users():
@@ -41,14 +41,6 @@ def update_user(user_id):
     updated_user = collection_Users.update_one({'_id': ObjectId(user_id)}, {'$set': data})
     if updated_user.modified_count:
         return jsonify({'message': 'User updated successfully'})
-    else:
-        return jsonify({'error': 'User not found'}), 404
-
-@app.route('/delete_user/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    delete_result = collection_Users.delete_one({'_id': ObjectId(user_id)})
-    if delete_result.deleted_count:
-        return jsonify({'message': 'User deleted successfully'})
     else:
         return jsonify({'error': 'User not found'}), 404
     
@@ -99,7 +91,7 @@ class User:
 
             # Validation of data
             if not (first_name and second_name and username and password and email and phone):
-                return jsonify({"error": "Missing required fields"}), 204
+                return make_response(jsonify("Missing one of required fields.")), 400
             #creation of user object
             user = {
                 "_id": uuid.uuid4().hex,
@@ -147,11 +139,24 @@ class User:
             }
             return make_response(jsonify(responseObject)), 500
   
-        
+    
+    def delete_user(self, user_id):
+        try:
+            result = db.Users.delete_one({'_id': user_id})
+            if result.deleted_count == 1:
+                response = {'message': f'User with ID {user_id} deleted successfully'}
+                return jsonify(response), 200
+            else:
+                response = {'message': f'User with ID {user_id} not found'}
+                return jsonify(response), 404
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    
 # Routes for User class    
 @app.route('/user/signup', methods=['POST'])
 def signup():
     return User().signup()
+
 '''
 @app.route('/user/login', methods=['POST'])
 def login():
@@ -161,3 +166,6 @@ def login():
 def logout():
     return User().logout()
 '''
+@app.route('/user/delete/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    return User().delete_user(user_id)

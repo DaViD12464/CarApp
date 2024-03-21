@@ -63,7 +63,7 @@ class User:
         try:
             payload = {
                 'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=0, seconds=5),
-                'iat': datetime.datetime.now(datetime.UTC),
+                'iat': datetime.datetime.now(datetime.UTC) ,
                 'sub': user_id
             }
             return jwt.encode(
@@ -98,8 +98,8 @@ class User:
             
 
             # Validation of data
-            if not ("first_name" and "second_name" and "username" and "password" and "email" and "phone"):
-                return make_response(jsonify("Missing one of required fields.")), 400
+            if not (first_name and second_name and username and password and email and phone):
+                return jsonify({"error": "Missing required fields"}), 204
             #creation of user object
             user = {
                 "_id": uuid.uuid4().hex,
@@ -112,8 +112,14 @@ class User:
                 "user_privileges": "basicUser", 
             }
             #generate auth token
-            auth_token = User.encode_auth_token(user,user['_id'])
-
+            auth_token = User().encode_auth_token(user['_id'])
+            
+            responseObject = {
+                'status': 'success',
+                'message': 'Successfully registered.',
+                'auth_token': auth_token
+                }
+            
             #password encryption
             user['password'] = pbkdf2_sha256.encrypt(user['password'])
 
@@ -130,11 +136,6 @@ class User:
                 'message': 'Username with this phone number already exists.',
             }
                 return make_response(jsonify(responseObject)), 400
-            responseObject = {
-                'status': 'success',
-                'message': 'Successfully registered.',
-                'auth_token': auth_token
-                }
             if db.Users.insert_one(user):
                 return make_response(jsonify(responseObject)), 201                                   
 

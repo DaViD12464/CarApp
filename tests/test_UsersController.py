@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 import os
-from dotenv import find_dotenv,load_dotenv
-from bson import ObjectId
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import pytest
+from CarApi import * # Załóżmy, że "app" to nazwa twojego pliku z aplikacją Flask
 
 '''setting up the dotenv environment'''
 #auto find the dotenv file
@@ -32,12 +32,13 @@ db = client['CarApi']
 collection_Cars = db['Cars']
 collection_Users = db['Users']
 
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
 
-@app.route('/all_users', methods=['GET'])
-def get_all_users():
-    users = list(collection_Users.find())
-    for user in users:
-        user['_id'] = str(user['_id'])
-    return jsonify(users)
-
-    
+def test_get_all_users(client):
+    """Testowanie endpointu /all_users"""
+    rv = client.get('/all_users')
+    assert rv.status_code == 200
+    assert isinstance(rv.json, list)  # Sprawdzenie, czy odpowiedź jest listą

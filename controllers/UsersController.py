@@ -113,13 +113,19 @@ class User:
             if db.Users.find_one({"email":  user['email'] }):
                 responseObject = {
                 'status': 'fail',
-                'message': 'Username with this Email address already exists.',
+                'message': 'User with this Email address already exists.',
             }
                 return make_response(jsonify(responseObject)), 400
             if db.Users.find_one({"phone":  user['phone'] }):
                 responseObject = {
                 'status': 'fail',
-                'message': 'Username with this phone number already exists.',
+                'message': 'User with this phone number already exists.',
+            }
+                return make_response(jsonify(responseObject)), 400
+            if db.Users.find_one({"username":  user['username'] }):
+                responseObject = {
+                'status': 'fail',
+                'message': 'User with this username already exists.',
             }
                 return make_response(jsonify(responseObject)), 400
             responseObject = {

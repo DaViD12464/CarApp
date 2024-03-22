@@ -1,4 +1,4 @@
-from CarApi import collection_Users, app, db, sec_key
+from CarApi import collection_Users, app, db, sec_key, algorithm
 from baseclass.User import *
 import datetime, jwt
 from passlib.hash import pbkdf2_sha256
@@ -45,23 +45,25 @@ def update_user(user_id):
         return jsonify({'error': 'User not found'}), 404
     
 ##################################################
-# Używane do rejestracji i logowania z autoryzacja tokenem:
-# https://realpython.com/token-based-authentication-with-flask/#register-route
-# https://github.com/realpython/flask-jwt-auth/blob/master/project/server/models.py
 
 class User:   
     
     def encode_auth_token(self, user_id):
         try:
             payload = {
+<<<<<<< HEAD
                 'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=0, seconds=5),
                 'iat': datetime.datetime.now(datetime.UTC) ,
+=======
+                'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=0, seconds=600),
+                'iat': datetime.datetime.now(datetime.UTC),
+>>>>>>> b0966e5304c33ddf1b9e51c6cb31ad35c745284e
                 'sub': user_id
             }
             return jwt.encode(
                 payload,
                 sec_key,
-                algorithm='HS256'
+                algorithm
             )
         except Exception as e:
             return e
@@ -69,12 +71,15 @@ class User:
     @staticmethod   #:param auth_token:   :return: integer|string
     def decode_auth_token(auth_token): 
         try:
-            payload = jwt.decode(auth_token, sec_key)
-            return payload['sub']
+            payload = jwt.decode(auth_token, sec_key, algorithm)
+            user_id = uuid.UUID(payload['sub'])  # Konwersja identyfikatora na obiekt UUID
+            return user_id
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please try again.'
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
+        except ValueError:
+            return 'Invalid UUID format.'
 
     def signup(self):
         try:
@@ -104,6 +109,7 @@ class User:
                 "user_privileges": "basicUser", 
             }
             #generate auth token
+<<<<<<< HEAD
             auth_token = User().encode_auth_token(user['_id'])
             
             responseObject = {
@@ -112,6 +118,10 @@ class User:
                 'auth_token': auth_token
                 }
             
+=======
+            auth_token = User.encode_auth_token(self,user['_id'])
+
+>>>>>>> b0966e5304c33ddf1b9e51c6cb31ad35c745284e
             #password encryption
             user['password'] = pbkdf2_sha256.encrypt(user['password'])
 
@@ -119,13 +129,19 @@ class User:
             if db.Users.find_one({"email":  user['email'] }):
                 responseObject = {
                 'status': 'fail',
-                'message': 'Username with this Email address already exists.',
+                'message': 'User with this Email address already exists.',
             }
                 return make_response(jsonify(responseObject)), 400
             if db.Users.find_one({"phone":  user['phone'] }):
                 responseObject = {
                 'status': 'fail',
-                'message': 'Username with this phone number already exists.',
+                'message': 'User with this phone number already exists.',
+            }
+                return make_response(jsonify(responseObject)), 400
+            if db.Users.find_one({"username":  user['username'] }):
+                responseObject = {
+                'status': 'fail',
+                'message': 'User with this username already exists.',
             }
                 return make_response(jsonify(responseObject)), 400
             if db.Users.insert_one(user):
@@ -140,8 +156,62 @@ class User:
             return make_response(jsonify(responseObject)), 500
   
     
-    def delete_user(self, user_id):
+    def login(self):
         try:
+            # Extracting form data
+            data = request.json
+            usernameOrMail = data.get('usernameOrMail')
+            password = data.get('password')
+            if not (usernameOrMail and password):
+                return make_response(jsonify("Missing one of required fields.")), 400
+            user = db.Users.find_one({'$or': [{'username': usernameOrMail}, {'email': usernameOrMail}]})
+            if user and pbkdf2_sha256.verify(password, user['password']):
+                auth_token = User.encode_auth_token(self,user['_id'])
+                responseObject = {
+                    'status': 'success',
+                    'message': 'Successfully logged in.',
+                    'auth_token': auth_token
+                }
+                return make_response(jsonify(responseObject)), 200
+            else:
+                responseObject = {
+                    'status': 'fail',
+                    'message': 'Invalid username/email or password.'
+                }
+                return make_response(jsonify(responseObject)), 401
+        except Exception as e:
+            print(e)
+  
+    def logout(self):
+        try:
+            auth_token = request.headers.get('Authorization')
+            if auth_token:
+                user_id = User.decode_auth_token(auth_token)
+                if isinstance(user_id, str):
+                    responseObject = {
+                        'status': 'fail',
+                        'message': user_id
+                    }
+                    return make_response(jsonify(responseObject)), 401
+                else:
+                    # Tutaj usuń lub oznacz token jako nieważny
+                    responseObject = {
+                        'status': 'success',
+                        'message': 'Successfully logged out.'
+                    }
+                    return make_response(jsonify(responseObject)), 200
+            else:
+                responseObject = {
+                    'status': 'fail',
+                    'message': 'Provide a valid auth token.'
+                }
+                return make_response(jsonify(responseObject)), 403
+        except Exception as e:
+            print(e)
+    
+    def delete_user(self):
+        try:
+            user_id = request.json.get('id')
             result = db.Users.delete_one({'_id': user_id})
             if result.deleted_count == 1:
                 response = {'message': f'User with ID {user_id} deleted successfully'}
@@ -157,7 +227,7 @@ class User:
 def signup():
     return User().signup()
 
-'''
+
 @app.route('/user/login', methods=['POST'])
 def login():
     return User().login()
@@ -165,7 +235,7 @@ def login():
 @app.route('/user/logout', methods=['GET'])
 def logout():
     return User().logout()
-'''
-@app.route('/user/delete/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    return User().delete_user(user_id)
+
+@app.route('/user/deleteAccount', methods=['DELETE'])
+def delete_user():
+    return User().delete_user()

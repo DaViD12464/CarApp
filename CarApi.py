@@ -12,6 +12,12 @@ print(dotenv_path)
 #loading entries as environment variables
 load_dotenv(dotenv_path)
 uri = os.getenv("uri")
+<<<<<<< HEAD
+=======
+sec_key = os.getenv("secret_key")
+algorithm = os.getenv("algorithm")
+
+>>>>>>> b0966e5304c33ddf1b9e51c6cb31ad35c745284e
 
 # Create a Flask app
 app = Flask(__name__)

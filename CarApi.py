@@ -3,7 +3,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
 from dotenv import find_dotenv,load_dotenv
-from bson import ObjectId
+
 
 '''setting up the dotenv environment'''
 #auto find the dotenv file
@@ -31,16 +31,8 @@ except Exception as e:
     
     
 # Create a database and a collection
-db = client['CarApi']
+db = client.CarApi
 collection_Cars = db['Cars']
 collection_Users = db['Users']
-
-
-@app.route('/all_users', methods=['GET'])
-def get_all_users():
-    users = list(collection_Users.find())
-    for user in users:
-        user['_id'] = str(user['_id'])
-    return jsonify(users)
 
     

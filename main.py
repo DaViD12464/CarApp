@@ -1,4 +1,3 @@
-import controllers.DestinationsController as DestinationsController, controllers.CarController as CarController, controllers.UsersController as Controller # --not used
 from CarApi import *
 
 try:

@@ -128,6 +128,11 @@ class User:
                 'message': 'User with this username already exists.',
             }
                 return make_response(jsonify(responseObject)), 400
+            responseObject = {
+                'status': 'success',
+                'message': 'Successfully registered.',
+                'auth_token': auth_token
+                }
             if db.Users.insert_one(user):
                 return make_response(jsonify(responseObject)), 201                                   
 

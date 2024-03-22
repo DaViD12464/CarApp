@@ -51,13 +51,8 @@ class User:
     def encode_auth_token(self, user_id):
         try:
             payload = {
-<<<<<<< HEAD
-                'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=0, seconds=5),
-                'iat': datetime.datetime.now(datetime.UTC) ,
-=======
                 'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=0, seconds=600),
                 'iat': datetime.datetime.now(datetime.UTC),
->>>>>>> b0966e5304c33ddf1b9e51c6cb31ad35c745284e
                 'sub': user_id
             }
             return jwt.encode(
@@ -109,19 +104,8 @@ class User:
                 "user_privileges": "basicUser", 
             }
             #generate auth token
-<<<<<<< HEAD
-            auth_token = User().encode_auth_token(user['_id'])
-            
-            responseObject = {
-                'status': 'success',
-                'message': 'Successfully registered.',
-                'auth_token': auth_token
-                }
-            
-=======
             auth_token = User.encode_auth_token(self,user['_id'])
 
->>>>>>> b0966e5304c33ddf1b9e51c6cb31ad35c745284e
             #password encryption
             user['password'] = pbkdf2_sha256.encrypt(user['password'])
 

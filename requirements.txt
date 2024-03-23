@@ -1,0 +1,11 @@
+Flask
+Flask-PyMongo
+pymongo
+PyJWT
+python-dotenv
+os
+bson
+passlib
+pydantic
+datetime
+werkzeug

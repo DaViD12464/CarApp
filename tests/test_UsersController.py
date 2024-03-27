@@ -113,7 +113,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         
     def test_logout_success(self):
-        response
+        pass
         
         
 if __name__ == '__main__':

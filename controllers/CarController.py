@@ -1,6 +1,7 @@
-from CarApi import *
+from CarApi import collection_Cars, app
 from baseclass.Car import *
-
+from bson import ObjectId
+from flask import jsonify, request
 
 @app.route('/')
 def index():
@@ -46,7 +47,7 @@ def update_car(car_id):
         return jsonify({'error': 'Car not found'}), 404
 
 
-@app.route('/car/<car_id>', methods=['DELETE'])
+@app.route('/remove_car/<car_id>', methods=['DELETE'])
 def delete_car(car_id):
     delete_result = collection_Cars.delete_one({'_id': ObjectId(car_id)})
     if delete_result.deleted_count:

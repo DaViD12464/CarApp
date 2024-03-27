@@ -39,3 +39,5 @@ def delete_car_photo():
         filename = request.view_args['filename']
         os.remove(target + filename)
         return "Photo deleted", 200
+    
+    

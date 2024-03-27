@@ -126,17 +126,25 @@ class TestUser(unittest.TestCase):
         response = self.app.get("/all_users")
         response_data = response.json
         try:
-            added_user_id = response_data[len(response_data)-1]['_id']
+            if response_data[len(response_data)-1]['first_name'] == 'testuser':
+                added_user_id = response_data[len(response_data)-1]['_id']
+            else:
+                self.fail("User was not added during signup test correctly")
         except Exception as e:
-            "No users available for deletion"
-        if added_user_id is response_data['name'] == "testuser":
-            #Delete user with last ID from database exists
+            "No test users available for deletion"
+        if added_user_id:
+            #Delete user with last ID from database if exists
             response = self.app.delete(f'/user/deleteAccount', json = {"id":added_user_id})
             
             self.assertIn(response.status_code, [200, 204])
         else:
             #in case user does not exist,
             self.fail("User ID was not stored during sign-up")
+            
+    def test_delete_user_failure(self):
+            response = self.app.delete(f'/user/deleteAccount', json = {"id":"InvalidID"})
+            self.assertIn(response.status_code, [200, 204])
+           
         
         
 if __name__ == '__main__':

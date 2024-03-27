@@ -144,6 +144,7 @@ class TestUser(unittest.TestCase):
     def test_delete_user_failure(self):
             response = self.app.delete(f'/user/deleteAccount', json = {"id":"InvalidID"})
             self.assertIn(response.status_code, [200, 204])
+            
            
         
         

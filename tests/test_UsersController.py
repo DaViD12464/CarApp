@@ -10,7 +10,7 @@ except Exception as e:
 
     
 class TestUser(unittest.TestCase):
-    
+  
     def setUp(self):
         self.app = app.test_client()
     
@@ -82,6 +82,10 @@ class TestUser(unittest.TestCase):
         
         self.assertEqual(response.status_code, 201)
         
+        #Get and store response JSON data for future deletion
+        response_data = response.json
+        self.added_user_id = response_data.get('_id')
+        
     def test_signUp_failure(self):
         
         #Response status code 400 expected as I try to add existing user
@@ -114,6 +118,25 @@ class TestUser(unittest.TestCase):
         
     def test_logout_success(self):
         pass
+    
+    def test_logut_failure(self):
+        pass
+    
+    def test_delete_user_success(self):
+        response = self.app.get("/all_users")
+        response_data = response.json
+        try:
+            added_user_id = response_data[len(response_data)-1]['_id']
+        except Exception as e:
+            "No users available for deletion"
+        if added_user_id is response_data['name'] == "testuser":
+            #Delete user with last ID from database exists
+            response = self.app.delete(f'/user/deleteAccount', json = {"id":added_user_id})
+            
+            self.assertIn(response.status_code, [200, 204])
+        else:
+            #in case user does not exist,
+            self.fail("User ID was not stored during sign-up")
         
         
 if __name__ == '__main__':

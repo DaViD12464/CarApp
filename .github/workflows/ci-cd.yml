@@ -37,14 +37,22 @@ jobs:
      # - name: Build project
       #  run: python3 main.py
 
+      # Run unittest tests
+      - name: Run unittest tests
+        run: python -m unittest discover -s tests -p '*_test.py'
+
+      # Generate coverage report
+      - name: Generate coverage report
+        run: coverage xml -i
+
       #installs poetry for dependency management
       #- name: Install poetry
       #  uses: snok/install-poetry@v1
       #- name: Install package
       #  run: poetry install
 
-      - name: Test with pytest
-        run: pytest tests/ --cov=controllers/UsersController.py --cov-report=xml
+      #- name: Test with pytest
+      #  run: pytest tests/ --cov=controllers/UsersController.py --cov-report=xml
 
       - name: Use Codecov to track coverage
         uses: codecov/codecov-action@v2

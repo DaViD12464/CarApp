@@ -36,14 +36,13 @@ jobs:
       #  run: python3 main.py
 
       #installs poetry for dependency management
-     # - name: Install poetry
+      #- name: Install poetry
       #  uses: snok/install-poetry@v1
-
-     # - name: Install package
-     #   run: poetry install
+      #- name: Install package
+      #  run: poetry install
 
       - name: Test with pytest
-        run: poetry run pytest tests/ --cov-pycounts --cov-report=xml
+        run: pytest tests/ --cov-pycounts --cov-report=xml
 
       - name: Use Codecov to track coverage
         uses: codecov/codecov-action@v2

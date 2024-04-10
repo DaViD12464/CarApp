@@ -25,10 +25,10 @@ jobs:
       - name: Activate virtual environment
         run: source venv/bin/activate
 
-      - name: Setup keystore file
+      - name: Setup .env file
         run: |
-          echo "${{ secrets.ENVIRONMENT_FILE }}" > key.keystore.asc
-          gpg -d --passphrase "${{ secrets.ENV_PASSWORD }}" --batch key.keystore.asc > key.keystore
+          echo "${{ secrets.ENVIRONMENT_FILE }}" > key.env.asc
+          gpg -d --passphrase "${{ secrets.ENV_PASSWORD }}" --batch key.env.asc > key.env
 
       # Install dependencies from requirements.txt
       - name: Install dependencies

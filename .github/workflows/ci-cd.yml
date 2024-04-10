@@ -27,8 +27,8 @@ jobs:
 
       - name: Setup keystore file
         run: |
-          echo "${{ secrets.KEYSTORE_FILE }}" > key.keystore.asc
-          gpg -d --passphrase "${{ secrets.KEY_STORE_GPG_PASSWORD }}" --batch key.keystore.asc > key.keystore
+          echo "${{ secrets.ENVIRONMENT_FILE }}" > key.keystore.asc
+          gpg -d --passphrase "${{ secrets.ENV_PASSWORD }}" --batch key.keystore.asc > key.keystore
 
       # Install dependencies from requirements.txt
       - name: Install dependencies

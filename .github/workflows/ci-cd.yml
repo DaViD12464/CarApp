@@ -1,0 +1,65 @@
+name: ci-cd
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs: 
+  ci:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Check-out repository
+        uses: actions/checkout@v2
+
+      # Creating and activating a virtual environment
+      - name: Set up virtual environment
+        run: python3 -m venv venv
+      - name: Activate virtual environment
+        run: source venv/bin/activate
+
+      - name: Setup .env file
+        run: |
+          echo "${{ secrets.ENVIRONMENT_FILE }}" > key.env.asc
+          gpg -d --passphrase "${{ secrets.ENV_PASSWORD }}" --batch key.env.asc > key.env
+
+      # Install dependencies from requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+          pip install coverage
+
+        #Builds project before testing
+     # - name: Build project
+      #  run: python3 main.py
+
+      # Run unittest tests
+      - name: Run unittest tests
+        run: python -m unittest discover -s tests -p 'test*.py'
+
+      # Generate coverage report
+      - name: Generate coverage report
+        run: coverage xml -i
+
+      #installs poetry for dependency management
+      #- name: Install poetry
+      #  uses: snok/install-poetry@v1
+      #- name: Install package
+      #  run: poetry install
+
+      #- name: Test with pytest
+      #  run: pytest tests/ --cov=controllers/UsersController.py --cov-report=xml
+
+      - name: Use Codecov to track coverage
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage.xml   # report of test code coverage

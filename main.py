@@ -6,6 +6,6 @@ from CarApi import *
 
 try:
     print("Starting api...")
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='0.0.0.0', port=8000)
 except Exception as e:
     print(f"An error occurred while running Flask app: {e}")

@@ -28,9 +28,9 @@ jobs:
       - name: Setup .env file
         run: |
           touch .env
-          echo secret_key=${{ secrets.SECRET_KEY }} >> .env
-          echo algorithm=${{ secrets.ALGORITHM }} >> .env
-          echo uri = ${{secrets.URI}} >> .env
+          echo secret_key=${{ secrets.SECRET_KEY }} > .env
+          echo algorithm=${{ secrets.ALGORITHM }} > .env
+          echo uri = ${{secrets.URI}} > .env
           cat .env
 
       # Install dependencies from requirements.txt

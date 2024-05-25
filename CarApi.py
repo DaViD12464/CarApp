@@ -14,7 +14,7 @@ load_dotenv(dotenv_path)
 uri = os.getenv("uri")
 sec_key = os.getenv("secret_key")
 algorithm = os.getenv("algorithm")
-
+image_path = os.getenv("basePhotoPath")
 
 # Create a Flask app
 app = Flask(__name__)

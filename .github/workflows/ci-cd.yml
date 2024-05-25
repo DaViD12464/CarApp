@@ -27,8 +27,11 @@ jobs:
 
       - name: Setup .env file
         run: |
-          echo "${{ secrets.ENVIRONMENT_FILE }}" > key.env.asc
-          gpg -d --passphrase "${{ secrets.ENV_PASSWORD }}" --batch key.env.asc > key.env
+          touch .env
+          echo secret_key=${{ secrets.SECRET_KEY }} >> .env
+          echo algorithm=${{ secrets.ALGORITHM }} >> .env
+          echo uri = ${{secrets.URI}} >> .env
+          cat .env
 
       # Install dependencies from requirements.txt
       - name: Install dependencies

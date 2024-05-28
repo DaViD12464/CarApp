@@ -15,19 +15,9 @@ def client():
     uri = os.getenv("uri")
     # Update the app's MongoDB URI configuration
     client = MongoClient(uri)
-    db = client.get_database('CarApi')
-    collection_Cars = db['cars']
     
     with app.test_client() as client:
-        #with app.app_context():
-            # Clear the test database before each test
-        #    collection_Cars.delete_many({})
-        
         yield client
-
-        #with app.app_context():
-            # Clear the test database after each test
-        #    collection_Cars.delete_many({})
 
 # Test for the index route
 def test_index(client):

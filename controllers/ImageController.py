@@ -3,8 +3,7 @@ from werkzeug.utils import secure_filename
 import os
 from CarApi import db,app 
 
-#TO DO - add a route to upload car photos
-#TO DO - add a route to upload user  photos
+#TO DO - edit entire image controller to work with the new file structure
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 

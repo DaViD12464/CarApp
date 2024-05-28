@@ -47,7 +47,7 @@ jobs:
 
       # Run unittest tests
       - name: Run unittest tests
-        run: python -m unittest discover -s tests -p 'test*.py'
+        run: python -m pytest
 
       # Generate coverage report
       - name: Generate coverage report

@@ -1,6 +1,8 @@
 name: ci-cd
 
 on:
+  push:
+    branches: [ "dawid", "tymek" ]
   pull_request:
     branches: [ "main" ]
 

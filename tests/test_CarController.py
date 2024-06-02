@@ -1,23 +1,21 @@
-import pytest, os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+import pytest
 from bson import ObjectId
-from flask import json
+from flask import Flask,json
 from CarApi import collection_Cars
-from pymongo import MongoClient
-from main import app
+import mongomock
 
 @pytest.fixture        
 def client():
-    # Set the app to testing mode
-    app.config['TESTING'] = True
-    # Use database for testing
-    uri = os.getenv("uri")
-    # Update the app's MongoDB URI configuration
-    client = MongoClient(uri)
-    
+    app = Flask(__name__)
+    app.config['TESTING'] = True    
     with app.test_client() as client:
         yield client
+
+@pytest.fixture
+def DB_mock(monkeypatch):
+    client = mongomock.MongoClient()
+    monkeypatch.setattr(collection_Cars, 'client', client)
+    yield client
 
 # Test for the index route
 def test_index(client):
@@ -27,11 +25,12 @@ def test_index(client):
 
 # Test for getting all cars
 def test_get_all_cars(client, monkeypatch):
+    DB_mock
     test_cars = [
         {'_id': ObjectId(), 'name': 'Test Car 1'},
         {'_id': ObjectId(), 'name': 'Test Car 2'}
     ]
-    
+
     def mock_find():
         return test_cars
 
@@ -46,6 +45,7 @@ def test_get_all_cars(client, monkeypatch):
 
 # Test for getting a specific car
 def test_get_car(client, monkeypatch):
+    DB_mock
     test_car = {'_id': ObjectId(), 'name': 'Test Car'}
 
     def mock_find_one(query):
@@ -65,6 +65,7 @@ def test_get_car(client, monkeypatch):
 
 # Test for adding a car
 def test_add_car(client, monkeypatch):
+    DB_mock
     def mock_insert_one(data):
         return type('obj', (object,), {'inserted_id': ObjectId()})()
 
@@ -80,6 +81,7 @@ def test_add_car(client, monkeypatch):
 
 # Test for updating a car
 def test_update_car(client, monkeypatch):
+    DB_mock
     def mock_update_one(query, update):
         if query['_id'] == ObjectId('60c72b2f4f1a4e3d3f4d4a4b'):
             return type('obj', (object,), {'modified_count': 1})()
@@ -95,6 +97,7 @@ def test_update_car(client, monkeypatch):
 
 # Test for deleting a car
 def test_delete_car(client, monkeypatch):
+    DB_mock
     def mock_delete_one(query):
         if query['_id'] == ObjectId('60c72b2f4f1a4e3d3f4d4a4b'):
             return type('obj', (object,), {'deleted_count': 1})()

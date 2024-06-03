@@ -1,0 +1,13 @@
+services:
+  mlapp:
+    container_name: mlapp
+    image: francescoxx/mlapp
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - FLASK_APP=CarApi.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_RUN_PORT=8000

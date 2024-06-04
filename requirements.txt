@@ -7,3 +7,5 @@ PyJWT==2.8.0
 pymongo==4.6.2
 python-dotenv==1.0.1
 Werkzeug==3.0.1
+waitress
+requests

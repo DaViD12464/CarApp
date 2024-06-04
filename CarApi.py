@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
@@ -14,7 +14,6 @@ load_dotenv(dotenv_path)
 uri = os.getenv("uri")
 sec_key = os.getenv("secret_key")
 algorithm = os.getenv("algorithm")
-image_path = os.getenv("basePhotoPath")
 
 # Create a Flask app
 app = Flask(__name__)
